@@ -81,7 +81,7 @@
     ((= n 100) "cent")
     ((= n 1000) "mille")
     ((= n (puissance 10 6)) "million")
-    ((= n (puissance 10 9)) "milliard")
+    (else ((= n (puissance 10 9)) "milliard"))
     )
 )
  ;exemple
@@ -100,11 +100,11 @@
     ((= n 14) "quatorze")
     ((= n 15) "quinze")
     ((= n 16) "seize")
-    ((and (> n 16) (<= n 19)) 
+    (else ((and (> n 16) (<= n 19)) 
 
-    (string-append (string-append (ecritureDizaine (- n (remainder n 10))) " ") (base10 (remainder n 10)))
-    
-    )))
+    (string-append (string-append (ecritureDizaine (- n (remainder n 10))) " ") (base10 (remainder n 10)))))
+    )
+)
 
 (ecriture_0_19 2)
 
@@ -117,7 +117,7 @@
     ((<= n 19) (ecriture_0_19 n))
     ((= (remainder n 10) 0)  (ecritureDizaine n))
     ((and (> n 19) (< n 91)) (string-append (string-append (ecritureDizaine (- n (remainder n 10))) " ") (ecriture_0_19 (remainder n 10))))
-    ((> n 90) (string-append (string-append (ecritureDizaine (- (- n 10) (remainder n 10))) " ") (ecriture_0_19 (+ 10 (remainder n 10)))))
+    (else ((> n 90) (string-append (string-append (ecritureDizaine (- (- n 10) (remainder n 10))) " ") (ecriture_0_19 (+ 10 (remainder n 10))))))
     )
 )
 ;exemple
@@ -128,34 +128,33 @@
    (cond
     ((= (nbChiffres n) 2) (ecriture2Chiff n))
     ((= 0 (remainder n 100)) (aideEcriture3Chiff n))
-    ((>= n 100) (string-append (string-append (aideEcriture3Chiff n) " ") (ecriture2Chiff (remainder n  ))))
+    (else ((>= n 100) (string-append (string-append (aideEcriture3Chiff n) " ") (ecriture2Chiff (remainder n 100 )))))
     )
 ) 
 (define (aideEcriture3Chiff n)
    (if (= n 100) (ecritureDizaine n)
-    (string-append (string-append (base10 (/ n 100)) " ") (ecritureDizaine 100)))
+    (string-append (string-append (base10 (quotient n 100)) " ") (ecritureDizaine 100)))
 )
 ;(aideEcriture3Chiff 300)
 
 (ecriture3Chiff 234)
 
 ;6 :
-(define (ecriture6Chiff n)
-    (cond
-    ((= 3 (nbChiffres n)) (ecriture3Chiff n))
-    ((= 4 (nbChiffres n)) (string-append (string-append (ecritureDizaine (- n (remainder n 1000))) " ") (base10 (remainder n 10))))
+;(define (ecriture6Chiff n)
+ ;   (cond
+  ;  ((= 3 (nbChiffres n)) (ecriture3Chiff n))
+   ; ((= 4 (nbChiffres n)) (string-append (string-append (ecritureDizaine (- n (remainder n 1000))) " ") (base10 (remainder n 10))))
 
     
 
 
-    )
-)
+    ;)
+;)
 (define (calculDizaine n)
     (cond
     ((= n 1000) (ecritureDizaine n))
-    ((= n (puissance 10 e)) (/ n (puissance 10 e)))
-        
+    (else (string-append (string-append (base10 (quotient n (puissance 10 (- (nbChiffres n) 1)))) " ") (ecritureDizaine (puissance 10 (- (nbChiffres n) 1)))))
     )
 )
+(calculDizaine 3000)
 
-;ANAS
